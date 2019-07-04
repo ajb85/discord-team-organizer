@@ -1,18 +1,17 @@
 const Discord = require("discord.js");
-const DBL = require("dblapi.js");
-const express = require("express");
+// const express = require("express");
+const dotenv = require("dotenv");
 
-const app = express();
-const token = require("./API_TOKEN.js");
+dotenv.config();
+// const app = express();
 const client = new Discord.Client();
-const dbl = new DBL(token, client);
 
 // Optional events
-dbl.on("posted", () => {
+client.on("ready", () => {
   console.log("Server count posted!");
 });
 
-dbl.on("error", e => {
+client.on("error", e => {
   console.log(`Oops! ${e}`);
 });
 
@@ -22,3 +21,5 @@ dbl.on("error", e => {
 // app.listen((port = process.env.PORT || 3333) => {
 //   console.log(`Listening on port ${port}`);
 // });
+
+client.login(process.env.token);
