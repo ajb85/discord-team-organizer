@@ -11,6 +11,11 @@ module.exports = class CommandList {
 
     const args = raw.substring(11).split(",");
     const command = args.shift();
-    if (this.commands[command]) this.commands[command](args);
+    console.log("PARSED: ", command);
+    console.log("ARGS: ", args);
+    if (this.commands[command]) {
+      console.log("Command found");
+      console.log(this.commands[command](args));
+    }
   }
 };
