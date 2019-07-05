@@ -8,7 +8,7 @@ module.exports = class CommandList {
   parse(msg) {
     const raw = msg.content;
     const trigger = "!statesman";
-    if (raw.substring(0, 10) !== trigger) return;
+    if (raw.substring(0, 10).toLowerCase() !== trigger) return;
 
     const args = raw.substring(11).split(",");
     const owner = {
@@ -16,7 +16,7 @@ module.exports = class CommandList {
       id: msg.author.id,
       avatar: msg.author.avatar
     };
-    const command = args.shift();
+    const command = args.shift().toLowerCase();
     if (this.commands[command]) {
       const newTeam = this.commands[command](args, owner);
       newTeam.logTeam();

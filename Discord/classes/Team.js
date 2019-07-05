@@ -1,10 +1,12 @@
+const moment = require("moment");
 const Teammate = require("./Teammate.js");
 const AdSlot = require("./AdSlot.js");
 
 module.exports = class Team {
   constructor(game) {
-    this.date = game.date;
-    this.time = game.time;
+    const formatDate = game.date.replace("/", " ").replace(".", " ");
+    const formatTime = game.time.split()
+    this.start = moment().format(`${formatDate}, ${}`)
     this.level = game.level;
     this.activity = game.activity;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
