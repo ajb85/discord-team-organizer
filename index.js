@@ -1,38 +1,10 @@
-const Discord = require("discord.js");
-const express = require("express");
-const dotenv = require("dotenv");
-const cors = require("cors");
+require("dotenv").config();
 
-const router = require("./routes");
-
-dotenv.config();
-const app = express();
-const client = new Discord.Client();
-
-// Optional events
-client.on("ready", () => {
-  console.log("Server count posted!");
-});
-
-client.on("error", e => {
-  console.log(`Oops! ${e}`);
-});
-
-client.on("message", msg => {
-  if (msg.content === "ping") {
-    msg.reply("Pong!");
-  }
-});
-
-app.use(express.json());
-app.use(cors());
-
-app.get("/", (_, res) => {
-  res.status(200).send("ok");
-});
-
-app.listen((port = process.env.PORT || 3333) => {
-  console.log(`Listening on port ${port}`);
-});
+const server = require("./Express/server.js");
+const client = require("./Discord/client.js");
 
 client.login(process.env.token);
+
+server.listen((port = process.env.PORT || 5000), () => {
+  console.log(`\n Listening on port ${port}\n`);
+});
