@@ -1,31 +1,13 @@
-class Teammate {
-  constructor(member) {
-    this.name = member.name;
-    this.archetype = member.archetype;
-    this.level = member.level;
-    this.powersets = member.powersets;
-    this.isTeammate = true;
-  }
-}
+const Teammate = require("./Teammate.js");
+const AdSlot = require("./AdSlot.js");
 
-class AdSlot {
-  constructor(ad) {
-    this.archetype = ad.archetype;
-    this.powersets = ad.powersets;
-    this.level = ad.level;
-    this.role = ad.role;
-    this.applicants = [];
-    this.isAd = true;
-  }
-}
-
-class Team {
+module.exports = class Team {
   constructor(game) {
     this.date = game.date;
     this.time = game.time;
     this.level = game.level;
     this.activity = game.activity;
-    this.team = [new Teammate(game.owner), ...this.emptyTeam()];
+    this.team = [new Teammate(game.owner.username), ...this.emptyTeam()];
     this.alignment = game.alignment;
   }
 
@@ -70,7 +52,7 @@ class Team {
       new AdSlot(blankAd)
     ];
   }
-}
+};
 
 // Example objects:
 

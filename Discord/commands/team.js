@@ -1,7 +1,7 @@
 const Team = require("../classes/Team.js");
 const Command = require("../classes/Command.js");
 
-module.exports = args => {
+module.exports = (args, owner) => {
   const newTeam = new Command({
     date: true,
     time: true,
@@ -9,7 +9,7 @@ module.exports = args => {
     activity: true,
     alignment: true
   });
-  return newTeam.execute(args, params => new Team(params));
+  return newTeam.execute(args, params => new Team({ ...params, owner }));
 };
 
 // !statesman team, date 07/13/2018, time 07:00PM, level 45, activity Stateman Task Force, alignment hero

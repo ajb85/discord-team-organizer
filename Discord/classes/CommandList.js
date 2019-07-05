@@ -5,17 +5,23 @@ module.exports = class CommandList {
     this.commands = reqDir("../commands/");
   }
 
-  parse(raw) {
+  parse(msg) {
+    const raw = msg.content;
     const trigger = "!statesman";
     if (raw.substring(0, 10) !== trigger) return;
 
     const args = raw.substring(11).split(",");
+    const owner = {
+      name: msg.author.username,
+      id: msg.author.id,
+      avatar: msg.author.avatar
+    };
     const command = args.shift();
     console.log("PARSED: ", command);
     console.log("ARGS: ", args);
     if (this.commands[command]) {
       console.log("Command found");
-      console.log(this.commands[command](args));
+      console.log(this.commands[command](args, owner));
     }
   }
 };
