@@ -3,11 +3,12 @@ const AdSlot = require("./AdSlot.js");
 
 module.exports = class Team {
   constructor(game) {
+    console.log("Creating: ", game);
     this.date = game.date;
     this.time = game.time;
     this.level = game.level;
     this.activity = game.activity;
-    this.team = [new Teammate(game.owner.username), ...this.emptyTeam()];
+    this.team = [new Teammate(game.owner), ...this.emptyTeam()];
     this.alignment = game.alignment;
   }
 
