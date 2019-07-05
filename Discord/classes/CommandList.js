@@ -20,6 +20,7 @@ module.exports = class CommandList {
     if (this.commands[command]) {
       const newTeam = this.commands[command](args, owner);
       newTeam.logTeam();
+      return newTeam;
     }
   }
 };

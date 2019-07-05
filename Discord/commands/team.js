@@ -1,6 +1,9 @@
 const Team = require("../classes/Team.js");
 const Command = require("../classes/Command.js");
 
+// Temporary measure until DB is up
+const db = [];
+
 module.exports = (args, owner) => {
   const newTeam = new Command({
     date: true,
@@ -9,6 +12,7 @@ module.exports = (args, owner) => {
     activity: true,
     alignment: true
   });
+  db.push(newTeam);
   return newTeam.execute(args, params => new Team({ ...params, owner }));
 };
 
