@@ -1,6 +1,7 @@
 const Discord = require("discord.js");
 const express = require("express");
 const dotenv = require("dotenv");
+const cors = require("cors");
 
 dotenv.config();
 const app = express();
@@ -15,7 +16,7 @@ client.on("error", e => {
   console.log(`Oops! ${e}`);
 });
 
-app.use(json());
+app.use(express.json());
 app.use(cors());
 
 app.listen((port = process.env.PORT || 3333) => {
