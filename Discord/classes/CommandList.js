@@ -19,6 +19,7 @@ module.exports = class CommandList {
     const command = args.shift();
     console.log("PARSED: ", command);
     console.log("ARGS: ", args);
+    console.log("BY OWNER: ", owner);
     if (this.commands[command]) {
       console.log("Command found");
       console.log(this.commands[command](args, owner));
