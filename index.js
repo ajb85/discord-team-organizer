@@ -1,9 +1,9 @@
 const Discord = require("discord.js");
-// const express = require("express");
+const express = require("express");
 const dotenv = require("dotenv");
 
 dotenv.config();
-// const app = express();
+const app = express();
 const client = new Discord.Client();
 
 // Optional events
@@ -15,11 +15,11 @@ client.on("error", e => {
   console.log(`Oops! ${e}`);
 });
 
-// app.use(json());
-// app.use(cors());
+app.use(json());
+app.use(cors());
 
-// app.listen((port = process.env.PORT || 3333) => {
-//   console.log(`Listening on port ${port}`);
-// });
+app.listen((port = process.env.PORT || 3333) => {
+  console.log(`Listening on port ${port}`);
+});
 
 client.login(process.env.token);
