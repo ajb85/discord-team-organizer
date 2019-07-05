@@ -66,13 +66,6 @@ module.exports = class Team {
     console.log("Activity: ", this.activity);
     console.log("Team: ", this.team);
     console.log("Alignment: ", this.alignment);
-
-    this.date = game.date;
-    this.time = game.time;
-    this.level = game.level;
-    this.activity = game.activity;
-    this.team = [new Teammate(game.owner), ...this.emptyTeam()];
-    this.alignment = game.alignment;
   }
 };
 
