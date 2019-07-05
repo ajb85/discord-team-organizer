@@ -1,9 +1,12 @@
 const Discord = require("discord.js");
 const client = new Discord.Client();
 
+const CommandList = require("./classes/CommandList.js");
+const commands = new CommandList();
+
 // Optional events
 client.on("ready", () => {
-  console.log("Stateman Online!");
+  console.log("Statesman Online!");
 });
 
 client.on("error", e => {
@@ -11,9 +14,7 @@ client.on("error", e => {
 });
 
 client.on("message", msg => {
-  if (msg.content === "ping") {
-    msg.reply("Pong!");
-  }
+  commands.parse(msg);
 });
 
 module.exports = client;
