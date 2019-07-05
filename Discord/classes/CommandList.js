@@ -17,12 +17,9 @@ module.exports = class CommandList {
       avatar: msg.author.avatar
     };
     const command = args.shift();
-    console.log("PARSED: ", command);
-    console.log("ARGS: ", args);
-    console.log("BY OWNER: ", owner);
     if (this.commands[command]) {
-      console.log("Command found");
-      console.log(this.commands[command](args, owner));
+      const newTeam = this.commands[command](args, owner);
+      newTeam.logTeam();
     }
   }
 };

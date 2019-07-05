@@ -3,13 +3,13 @@ const AdSlot = require("./AdSlot.js");
 
 module.exports = class Team {
   constructor(game) {
-    console.log("Creating: ", game);
     this.date = game.date;
     this.time = game.time;
     this.level = game.level;
     this.activity = game.activity;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
     this.alignment = game.alignment;
+    this.isComplete = false;
   }
 
   verifySlot(slot) {
@@ -36,6 +36,10 @@ module.exports = class Team {
     }
   }
 
+  complete() {
+    this.isComplete = true;
+  }
+
   emptyTeam() {
     const blankAd = {
       archetype: null,
@@ -52,6 +56,23 @@ module.exports = class Team {
       new AdSlot(blankAd),
       new AdSlot(blankAd)
     ];
+  }
+
+  logTeam() {
+    console.log("This Team:");
+    console.log("Date: ", this.date);
+    console.log("Time: ", this.time);
+    console.log("Level: ", this.level);
+    console.log("Activity: ", this.activity);
+    console.log("Team: ", this.team);
+    console.log("Alignment: ", this.alignment);
+
+    this.date = game.date;
+    this.time = game.time;
+    this.level = game.level;
+    this.activity = game.activity;
+    this.team = [new Teammate(game.owner), ...this.emptyTeam()];
+    this.alignment = game.alignment;
   }
 };
 
