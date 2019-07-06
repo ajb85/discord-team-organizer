@@ -120,11 +120,11 @@ module.exports = class Team {
             owner.avatar
           }.jpg`
         },
-        title: `Starts in: ${moment(this.start, "YYYYMMDD h:mm").fromNow()}`,
+        title: `Starts in: ${moment(this.start, "YY-DD-MM hh:mm").fromNow()}`,
         fields,
         timestamp: new Date(),
         footer: {
-          text: `Starts: ${moment(this.start, "YYYY-MM-DD hh:mm").format(
+          text: `Starts: ${moment(this.start, "YY-DD-MM hh:mm").format(
             "MMMM Do YYYY, h:mm a"
           )}`
         }
