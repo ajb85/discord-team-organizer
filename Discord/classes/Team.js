@@ -5,8 +5,14 @@ const AdSlot = require("./AdSlot.js");
 module.exports = class Team {
   constructor(game) {
     const formatDate = game.date.replace("/", " ").replace(".", " ");
-    const formatTime = game.time.split()
-    this.start = moment().format(`${formatDate}, ${}`)
+    const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
+    const formatTime = game.time
+      .toLowerCase()
+      .split(dayOrNight)
+      .filter(m => m !== "" && m !== " ")
+      .join(" ");
+
+    this.start = moment().format(`${formatDate}, ${formatTime}`);
     this.level = game.level;
     this.activity = game.activity;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
@@ -62,8 +68,7 @@ module.exports = class Team {
 
   logTeam() {
     console.log("This Team:");
-    console.log("Date: ", this.date);
-    console.log("Time: ", this.time);
+    console.log("Start: ", this.start);
     console.log("Level: ", this.level);
     console.log("Activity: ", this.activity);
     console.log("Team: ", this.team);
