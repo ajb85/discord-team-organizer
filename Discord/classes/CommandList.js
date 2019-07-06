@@ -10,7 +10,7 @@ module.exports = class CommandList {
     const trigger = "!statesman";
     if (raw.substring(0, 10).toLowerCase() !== trigger) return;
 
-    const args = raw.substring(11).split(",");
+    const args = raw.substring(11).split(", ");
     const owner = {
       name: msg.author.username,
       id: msg.author.id,

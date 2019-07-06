@@ -6,6 +6,7 @@ module.exports = class Command {
   execute(args, cb) {
     const params = {};
     console.log("Executing new Command");
+    console.log("args");
     args.forEach(arg => {
       console.log("ARG: ", arg);
       const index = arg.indexOf(" ");
