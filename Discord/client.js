@@ -14,8 +14,7 @@ client.on("error", e => {
 });
 
 client.on("message", msg => {
-  const team = commands.parse(msg);
-  msg.reply(team.embed());
+  commands.parse(msg);
 });
 
 module.exports = client;

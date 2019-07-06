@@ -90,15 +90,18 @@ module.exports = class Team {
     const owner = this.team[0];
     let title = "";
     title += this.level ? `Level ${this.level}+` : "";
-    title += this.activity ? this.activity : `${owner.name}'s Team`;
+    title += this.activity ? ` ${this.activity}` : ` ${owner.name}'s Team`;
 
     const fields = this.team.map(member => {
       let value = "";
-      value += member.level
-        ? `Level ${member.level}`
-        : this.level
-        ? `Level ${this.level}`
-        : "";
+      if (member.isAd)
+        value += member.level
+          ? `Level ${member.level}`
+          : this.level
+          ? `Level ${this.level}`
+          : "";
+      else value += member.level ? `Level ${member.level}` : "";
+
       value += member.powersets ? ` ${member.powersets}` : "";
       value += member.archetype ? ` ${member.archetype}` : "";
 
