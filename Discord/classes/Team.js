@@ -91,6 +91,26 @@ module.exports = class Team {
     let title = "";
     title += this.level ? `Level ${this.level}+` : "";
     title += this.activity ? this.activity : `${owner.name}'s Team`;
+
+    const fields = this.team.map(member => {
+      let value = "";
+      value += member.level
+        ? `Level ${member.level}`
+        : this.level
+        ? `Level ${this.level}`
+        : "";
+      value += member.powersets ? ` ${member.powersets}` : "";
+      value += member.archetype ? ` ${member.archetype}` : "";
+
+      if (member.isAd) {
+        value = value.length ? `Requirements: ${value}` : "Requirements: None";
+      }
+      return {
+        name: member.isAd ? "Open Slot" : member.name,
+        value: value ? value : "Joined"
+      };
+    });
+
     return {
       embed: {
         color: 3447003,
@@ -101,28 +121,7 @@ module.exports = class Team {
           }.jpg`
         },
         title: `Starts in: ${moment(this.start, "YYYYMMDD h:mm").fromNow()}`,
-        fields: this.team.map(member => {
-          let value = "";
-          value += member.level
-            ? `Level ${member.level}`
-            : this.level
-            ? `Level ${this.level}`
-            : "";
-          value += member.powersets ? ` ${member.powersets}` : "";
-          value += member.archetype ? ` ${member.archetype}` : "";
-
-          if (member.isAd) {
-            value = value.length
-              ? `Requirements: ${value}`
-              : "Requirements: None";
-          }
-          const name = member.isAd ? "Open Slot" : member.name;
-          console.log("FIELD ADDED: ", name, value);
-          return {
-            name,
-            value
-          };
-        }),
+        fields,
         timestamp: new Date(),
         footer: {
           text: `Starts: ${moment(this.start, "YYYY-MM-DD hh:mm").format(
