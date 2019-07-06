@@ -7,7 +7,9 @@ module.exports = class Command {
     const params = {};
     console.log("Executing new Command");
     args.forEach(arg => {
+      console.log("ARG: ", arg);
       const index = arg.indexOf(" ");
+      console.log("split index: ", index);
       const param = arg.substring(0, index).toLowerCase();
 
       console.log("Found parameter: ", param);
