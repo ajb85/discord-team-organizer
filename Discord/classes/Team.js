@@ -4,7 +4,11 @@ const AdSlot = require("./AdSlot.js");
 
 module.exports = class Team {
   constructor(game) {
-    const formatDate = game.date.replace(/[^0-9]/gi, " ");
+    const formatDate = game.date
+      .replace(/[^0-9]/gi, "-")
+      .split("-")
+      .reverse()
+      .join("-");
     const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
     const formatTime =
       game.time
