@@ -10,7 +10,8 @@ module.exports = (args, owner) => {
     time: true,
     level: true,
     activity: true,
-    alignment: true
+    alignment: true,
+    description: true
   });
   db.push(newTeam);
   return newTeam.execute(args, params => new Team({ ...params, owner }));

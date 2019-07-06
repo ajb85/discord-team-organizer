@@ -6,14 +6,11 @@ module.exports = class Team {
   constructor(game) {
     const formatDate = game.date.replace(/[^0-9]/gi, " ");
     const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
-    console.log("AM OR PM: ", dayOrNight);
-    const formatTime = game.time
-      .toLowerCase()
-      .split(dayOrNight)
-      .filter(m => m !== "" && m !== " ")
-      .join(" ");
-
-    console.log("Time: ", formatTime);
+    const formatTime =
+      game.time
+        .toLowerCase()
+        .split(dayOrNight)
+        .join(" ") + ` ${dayOrNight}`;
 
     this.start = moment().format(`${formatDate}, ${formatTime}`);
     this.level = game.level;
@@ -21,6 +18,7 @@ module.exports = class Team {
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
     this.alignment = game.alignment;
     this.isComplete = false;
+    this.description = game.description;
   }
 
   verifySlot(slot) {
@@ -76,6 +74,50 @@ module.exports = class Team {
     console.log("Activity: ", this.activity);
     console.log("Team: ", this.team);
     console.log("Alignment: ", this.alignment);
+  }
+
+  embed() {
+    const owner = this.team[0];
+    let title;
+    title += this.level ? `Level ${this.level}+` : "";
+    title += this.activity ? this.activity : `${owner.name}'s Team`;
+    return {
+      embed: {
+        color: 3447003,
+        author: {
+          name: owner.name,
+          icon_url: `https://cdn.discordapp.com/avatars/${owner.id}/${
+            owner.avatar
+          }.jpg`
+        },
+        title,
+        description: this.description ? this.description : "A new team",
+        fields: this.teams.map(member => {
+          let value;
+          value += member.level
+            ? `Level ${member.level}`
+            : this.level
+            ? `Level ${this.level}`
+            : "";
+          value += member.powersets ? ` ${member.powersets}` : "";
+          value += member.archetype ? ` ${member.archetype}` : "";
+
+          if (member.isAd) {
+            value = value.length
+              ? `Requirements: ${value}`
+              : "Requirements: None";
+          }
+          return {
+            name: member.isAd ? "Open Slot" : member.name,
+            value
+          };
+        }),
+        timestamp: new Date(),
+        footer: {
+          text: `Starts: ${moment(this.start).format("MMMM Do YYYY, h:mm a")}`
+        }
+      }
+    };
   }
 };
 
