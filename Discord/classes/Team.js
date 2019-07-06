@@ -123,7 +123,9 @@ module.exports = class Team {
         }),
         timestamp: new Date(),
         footer: {
-          text: `Starts: ${moment(this.start).format("MMMM Do YYYY, h:mm a")}`
+          text: `Starts: ${moment(this.start, "YYYY-MM-DD hh:mm").format(
+            "MMMM Do YYYY, h:mm a"
+          )}`
         }
       }
     };
