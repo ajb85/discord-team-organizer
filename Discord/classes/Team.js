@@ -4,19 +4,7 @@ const AdSlot = require("./AdSlot.js");
 
 module.exports = class Team {
   constructor(game) {
-    const formatDate = game.date
-      .replace(/[^0-9]/gi, "-")
-      .split("-")
-      .reverse()
-      .join("-");
-    const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
-    const formatTime =
-      game.time
-        .toLowerCase()
-        .split(dayOrNight)
-        .join(" ") + ` ${dayOrNight}`;
-
-    this.start = moment().format(`${formatDate}, ${formatTime}`);
+    this.start = this._parseStart(game);
     this.level = game.level;
     this.activity = game.activity;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
@@ -24,25 +12,44 @@ module.exports = class Team {
     this.isComplete = false;
   }
 
-  verifySlot(slot) {
+  _verifySlot(slot) {
     const index = slot - 1;
     return index > 1 && index < 8;
   }
+  _parseStart(game) {
+    const formatDate = game.date
+      .replace(/[^0-9]/gi, "-")
+      .split("-")
+      .reverse()
+      .join("-");
+    const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
+    let formatTime = game.time
+      .toLowerCase()
+      .split(dayOrNight)
+      .join(" ");
+
+    if (dayOrNight === "pm") {
+      const hours = Number(formatTime.split(":")[0]) + 12;
+      formatTime = hours.toString() + formatTime.substring(2);
+    }
+
+    return moment().format(`${formatDate} ${formatTime}`);
+  }
 
   roleAd(slot, ad) {
-    if (verifySlot(slot)) {
+    if (_verifySlot(slot)) {
       this.team[slot - 1] = new AdSlot(ad);
     }
   }
 
   apply(slot, member) {
-    if (verifySlot(slot) && this.team[slot - 1].isAd) {
+    if (_verifySlot(slot) && this.team[slot - 1].isAd) {
       this.team[slot - 1].applicants.push(new Teammate(member));
     }
   }
 
   acceptApplicant(slot, appIndex) {
-    if (verifySlot(slot) && this.team[slot - 1].isAd) {
+    if (_verifySlot(slot) && this.team[slot - 1].isAd) {
       const member = this.team[slot - 1].applicants[appIndex];
       this.team[slot - 1] = member;
     }
