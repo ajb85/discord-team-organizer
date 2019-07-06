@@ -18,7 +18,6 @@ module.exports = class Team {
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
     this.alignment = game.alignment;
     this.isComplete = false;
-    this.description = game.description;
   }
 
   verifySlot(slot) {
@@ -91,7 +90,6 @@ module.exports = class Team {
           }.jpg`
         },
         title,
-        description: this.description ? this.description : "A new team",
         fields: this.team.map(member => {
           let value;
           value += member.level
