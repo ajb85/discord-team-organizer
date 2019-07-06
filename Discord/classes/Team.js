@@ -92,7 +92,7 @@ module.exports = class Team {
         },
         title,
         description: this.description ? this.description : "A new team",
-        fields: this.teams.map(member => {
+        fields: this.team.map(member => {
           let value;
           value += member.level
             ? `Level ${member.level}`
