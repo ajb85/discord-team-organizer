@@ -95,12 +95,12 @@ module.exports = class Team {
       embed: {
         color: 3447003,
         author: {
-          name: owner.name,
+          name: title,
           icon_url: `https://cdn.discordapp.com/avatars/${owner.id}/${
             owner.avatar
           }.jpg`
         },
-        title,
+        title: `Starts in: ${moment(this.start, "YYYYMMDD h:mm").fromNow()}`,
         fields: this.team.map(member => {
           let value = "";
           value += member.level
@@ -116,8 +116,10 @@ module.exports = class Team {
               ? `Requirements: ${value}`
               : "Requirements: None";
           }
+          const name = member.isAd ? "Open Slot" : member.name;
+          console.log("FIELD ADDED: ", name, value);
           return {
-            name: member.isAd ? "Open Slot" : member.name,
+            name,
             value
           };
         }),
