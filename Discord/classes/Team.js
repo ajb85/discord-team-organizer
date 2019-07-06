@@ -4,13 +4,16 @@ const AdSlot = require("./AdSlot.js");
 
 module.exports = class Team {
   constructor(game) {
-    const formatDate = game.date.replace("/", " ").replace(".", " ");
+    const formatDate = game.date.replace(/[^0-9]/gi, " ");
     const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
+    console.log("AM OR PM: ", dayOrNight);
     const formatTime = game.time
       .toLowerCase()
       .split(dayOrNight)
       .filter(m => m !== "" && m !== " ")
       .join(" ");
+
+    console.log("Time: ", formatTime);
 
     this.start = moment().format(`${formatDate}, ${formatTime}`);
     this.level = game.level;
