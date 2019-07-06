@@ -77,7 +77,7 @@ module.exports = class Team {
 
   embed() {
     const owner = this.team[0];
-    let title;
+    let title = "";
     title += this.level ? `Level ${this.level}+` : "";
     title += this.activity ? this.activity : `${owner.name}'s Team`;
     return {
@@ -91,7 +91,7 @@ module.exports = class Team {
         },
         title,
         fields: this.team.map(member => {
-          let value;
+          let value = "";
           value += member.level
             ? `Level ${member.level}`
             : this.level
