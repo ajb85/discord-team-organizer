@@ -59,7 +59,7 @@ module.exports = (Teams => (args, owner) => {
     params => new Team({ ...params, owner })
   );
 
-  if (newTeam.start >= new Date()) {
+  if (new Date(newTeam.start) >= new Date()) {
     newTeam.logTeam();
     Teams.add(newTeam);
 
