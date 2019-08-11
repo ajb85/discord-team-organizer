@@ -1,12 +1,12 @@
-const moment = require("moment");
-const Teammate = require("./Teammate.js");
-const AdSlot = require("./AdSlot.js");
+const moment = require('moment');
+const Teammate = require('./Teammate.js');
+const AdSlot = require('./AdSlot.js');
 
 module.exports = class Team {
   constructor(game) {
     this.start = this._parseStart(game);
     this.level = game.level;
-    this.activity = game.activity;
+    this.name = game.name;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
     this.alignment = game.alignment;
     this.isComplete = false;
@@ -18,18 +18,18 @@ module.exports = class Team {
   }
   _parseStart(game) {
     const formatDate = game.date
-      .replace(/[^0-9]/gi, "-")
-      .split("-")
+      .replace(/[^0-9]/gi, '-')
+      .split('-')
       .reverse()
-      .join("-");
-    const dayOrNight = game.time.toLowerCase().includes("am") ? "am" : "pm";
+      .join('-');
+    const dayOrNight = game.time.toLowerCase().includes('am') ? 'am' : 'pm';
     let formatTime = game.time
       .toLowerCase()
       .split(dayOrNight)
-      .join(" ");
+      .join(' ');
 
-    if (dayOrNight === "pm") {
-      const hours = Number(formatTime.split(":")[0]) + 12;
+    if (dayOrNight === 'pm') {
+      const hours = Number(formatTime.split(':')[0]) + 12;
       formatTime = hours.toString() + formatTime.substring(2);
     }
 
@@ -78,37 +78,37 @@ module.exports = class Team {
   }
 
   logTeam() {
-    console.log("This Team:");
-    console.log("Start: ", this.start);
-    console.log("Level: ", this.level);
-    console.log("Activity: ", this.activity);
-    console.log("Team: ", this.team);
-    console.log("Alignment: ", this.alignment);
+    console.log('This Team:');
+    console.log('Start: ', this.start);
+    console.log('Level: ', this.level);
+    console.log('Name: ', this.name);
+    console.log('Team: ', this.team);
+    console.log('Alignment: ', this.alignment);
   }
 
   embed() {
     const owner = this.team[0];
-    let title = this.activity ? ` ${this.activity}` : ` ${owner.name}'s Team`;
+    let title = this.name ? ` ${this.name}` : ` ${owner.name}'s Team`;
 
     const fields = this.team.map(member => {
-      let value = "";
+      let value = '';
       if (member.isAd)
         value += member.level
           ? `Level ${member.level}`
           : this.level
           ? `Level ${this.level}`
-          : "";
-      else value += member.level ? `Level ${member.level}` : "";
+          : '';
+      else value += member.level ? `Level ${member.level}` : '';
 
-      value += member.powersets ? ` ${member.powersets}` : "";
-      value += member.archetype ? ` ${member.archetype}` : "";
+      value += member.powersets ? ` ${member.powersets}` : '';
+      value += member.archetype ? ` ${member.archetype}` : '';
 
       if (member.isAd) {
-        value = value.length ? `Requirements: ${value}` : "Requirements: None";
+        value = value.length ? `Requirements: ${value}` : 'Requirements: None';
       }
       return {
-        name: member.isAd ? "Open Slot" : member.name,
-        value: value ? value : "Joined"
+        name: member.isAd ? 'Open Slot' : member.name,
+        value: value ? value : 'Joined'
       };
     });
 
@@ -121,12 +121,12 @@ module.exports = class Team {
             owner.avatar
           }.jpg`
         },
-        title: `Starts in: ${moment(this.start, "YY-DD-MM hh:mm").fromNow()}`,
+        title: `Starts in: ${moment(this.start, 'YY-DD-MM hh:mm').fromNow()}`,
         fields,
         timestamp: new Date(),
         footer: {
-          text: `Starts: ${moment(this.start, "YY-DD-MM hh:mm").format(
-            "MMMM Do YYYY, h:mm a"
+          text: `Starts: ${moment(this.start, 'YY-DD-MM hh:mm').format(
+            'MMMM Do YYYY, h:mm a'
           )}`
         }
       }
@@ -142,7 +142,7 @@ module.exports = class Team {
         date: ,
         time: ,
         level: ,
-        activity: ,
+        name: ,
         alignment: ,
         owner: {TEAMMEMBER OBJECT},
     }
