@@ -12,10 +12,13 @@ class Teams {
   add(team) {
     const { start } = team;
 
-    if (start <= this.teams[0].start) {
-      this.teams.unshift(team);
-    } else if (start >= this.teams[this.teams.length - 1].start) {
+    if (
+      !this.teams.length ||
+      start >= this.teams[this.teams.length - 1].start
+    ) {
       this.teams.push(team);
+    } else if (start <= this.teams[0].start) {
+      this.teams.unshift(team);
     } else {
       this._binaryInsert(team);
     }
