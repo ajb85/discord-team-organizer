@@ -4,7 +4,6 @@ module.exports = class AdSlot {
     this.powersets = ad.powersets;
     this.level = ad.level;
     this.role = ad.role;
-    this.applicants = [];
     this.isAd = true;
   }
 };
