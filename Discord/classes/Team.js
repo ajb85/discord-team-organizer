@@ -59,6 +59,11 @@ module.exports = class Team {
     this.isComplete = true;
   }
 
+  isExpired() {
+    const now = moment().format();
+    return moment(this.start, 'YY-DD-MM hh:mm').isBefore(now);
+  }
+
   emptyTeam() {
     const blankAd = {
       archetype: null,
