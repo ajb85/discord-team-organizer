@@ -59,14 +59,14 @@ module.exports = (Teams => (args, owner) => {
     params => new Team({ ...params, owner })
   );
 
-  if (new Date(newTeam.start) >= new Date()) {
-    newTeam.logTeam();
-    Teams.add(newTeam);
+  // if (new Date(newTeam.start) >= new Date()) {
+  newTeam.logTeam();
+  Teams.add(newTeam);
 
-    return newTeam.embed();
-  } else {
-    return 'Sorry, creating a team in the past would violate continuity.';
-  }
+  return newTeam.embed();
+  // } else {
+  //   return 'Sorry, creating a team in the past would violate continuity.';
+  // }
 })(new Teams());
 // !statesman team, date 07/13/2018, time 07:00PM, level 45, activity Stateman Task Force,
 // alignment hero
