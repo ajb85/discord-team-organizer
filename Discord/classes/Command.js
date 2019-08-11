@@ -1,15 +1,18 @@
 module.exports = class Command {
-  constructor(validArgs) {
-    this.validArgs = validArgs;
+  constructor(validParams) {
+    this.validParams = validParams;
   }
 
   execute(args, cb) {
     const params = {};
     args.forEach(arg => {
-      const index = arg.indexOf(" ");
+      // !statesman command params --> params
+      // !statesman & command are chopped off before it gets here
+
+      const index = arg.indexOf(' ');
       const param = arg.substring(0, index).toLowerCase();
 
-      if (this.validArgs[param]) {
+      if (this.validParams[param]) {
         params[param] = arg.substring(index + 1);
       }
     });
