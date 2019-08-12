@@ -146,7 +146,7 @@ module.exports = class Team {
           : 'Requirements: None';
       }
       return {
-        name: slot.isAd ? `${i + 1} Open Slot` : `${i + 1} slot.name`,
+        name: slot.isAd ? `${i + 1}) Open Slot` : `${i + 1}) ${slot.name}`,
         value: description.length ? description : 'Joined'
       };
     });
