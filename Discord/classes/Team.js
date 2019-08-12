@@ -8,6 +8,7 @@ module.exports = class Team {
     this.level = game.level;
     this.name = game.name ? game.name : ` ${game.owner.name}'s Team`;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
+    this.owner = game.owner;
     this.alignment = game.alignment;
     this.isComplete = false;
   }
@@ -111,7 +112,6 @@ module.exports = class Team {
 
   embed() {
     let title = this.name;
-
     const fields = this.team.map(slot => {
       let description = '';
       if (slot.isAd) {
@@ -140,8 +140,8 @@ module.exports = class Team {
         color: 3447003,
         author: {
           name: title,
-          icon_url: `https://cdn.discordapp.com/avatars/${owner.id}/${
-            owner.avatar
+          icon_url: `https://cdn.discordapp.com/avatars/${this.owner.id}/${
+            this.owner.avatar
           }.jpg`
         },
         title: `Starts in: ${moment(this.start, 'YY-DD-MM hh:mm').fromNow()}`,

@@ -33,13 +33,10 @@ module.exports = class CommandList {
         commands.length ? commands[0] : null,
         msgOwner
       );
+
       if (botResponse) {
         msg.reply(botResponse);
       }
-    } else {
-      msg.reply(
-        "Sorry, that's not a command I know.  For help try: `!statesman help`"
-      );
     }
   }
 };
