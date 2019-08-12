@@ -17,6 +17,9 @@ module.exports = class Team {
     return index > 1 && index < 8;
   }
   _parseStart(game) {
+    if (!game.start) {
+      return moment().format();
+    }
     const formatDate = game.date
       .replace(/[^0-9]/gi, '-')
       .split('-')
