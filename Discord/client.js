@@ -14,7 +14,6 @@ client.on('error', e => {
 });
 
 client.on('message', msg => {
-  console.log('Message obj: ', msg);
   commands.parse(msg);
 });
 
