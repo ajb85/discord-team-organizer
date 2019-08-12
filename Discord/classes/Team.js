@@ -58,7 +58,8 @@ module.exports = class Team {
     // }
 
     this.team[index] = new Teammate({ ...user, description });
-    return 'Getting you added now!';
+    // return 'Getting you added now!'; // This is the long term code
+    return this.embed(); // This is short term code
   }
 
   leave(user) {
