@@ -13,7 +13,7 @@ module.exports = class CommandList {
     }
 
     // Remove trigger
-    const args = raw.substring(this.trigger.length + 2).split(', ');
+    const args = raw.substring(this.trigger.length + 1).split(', ');
 
     const msgOwner = {
       name: msg.author.username,
