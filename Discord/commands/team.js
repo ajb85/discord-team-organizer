@@ -78,7 +78,7 @@ module.exports = (Teams => (args, command, owner) => {
   };
 
   if (command) {
-    validCommands[command]();
+    return validCommands[command]();
   }
 })(new Teams());
 
