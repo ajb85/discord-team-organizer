@@ -58,7 +58,7 @@ module.exports = class Team {
   }
 
   leave(user) {
-    const index = this._findMemberByName(user.name);
+    const index = this._findMemberByID(user.id);
     if (index === -1) {
       return 'You are not on that team.';
     }
@@ -179,9 +179,9 @@ module.exports = class Team {
     return -1;
   }
 
-  _findMemberByName(name) {
+  _findMemberByID(id) {
     for (let i = 0; i < this.team.length; i++) {
-      if (this.team[i].name === name) {
+      if (this.team[i].id === id) {
         return i;
       }
     }
