@@ -112,7 +112,7 @@ module.exports = class Team {
 
   embed() {
     let title = this.name;
-    const fields = this.team.map(slot => {
+    const fields = this.team.map((slot, i) => {
       let description = '';
       if (slot.isAd) {
         description += slot.level
@@ -130,7 +130,7 @@ module.exports = class Team {
           : 'Requirements: None';
       }
       return {
-        name: slot.isAd ? 'Open Slot' : slot.name,
+        name: slot.isAd ? `${i + 1} Open Slot` : `${i + 1} slot.name`,
         description: description ? description : 'Joined'
       };
     });
