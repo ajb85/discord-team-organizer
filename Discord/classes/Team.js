@@ -13,9 +13,9 @@ module.exports = class Team {
     this.isComplete = false;
   }
 
-  _verifySlot(slot) {
+  _verifySlotIndex(slot) {
     const index = slot - 1;
-    return index > 1 && index < 8;
+    return index >= 0 && index < this.team.length;
   }
   _parseStart(game) {
     if (!game.date || !game.time) {
@@ -40,22 +40,35 @@ module.exports = class Team {
     return moment().format(`${formatDate} ${formatTime}`);
   }
 
+  join(user, description, slot) {
+    // O(1) - O(n)
+    const index = slot ? parseInt(slot, 10) - 1 : this._findFirstEmptyIndex();
+    if (index === -1) {
+      return 'Sorry, that team is full';
+    }
+    if (slot && !this._verifySlotIndex(slot)) {
+      return 'That slot does not exist.';
+    }
+    if (this.team[index].isTeammate) {
+      return 'Someone is already in that slot!';
+    }
+
+    this.team[index] = new Teammate({ ...user, description });
+    return 'Getting you added now!';
+  }
+
+  leave(user) {
+    const index = this._findMemberByName(user.name);
+    if (index === -1) {
+      return 'You are not on that team.';
+    }
+    this.team[index] = new AdSlot({});
+    return 'I am removing you from that team now.';
+  }
+
   roleAd(slot, ad) {
-    if (_verifySlot(slot)) {
+    if (this._verifySlotIndex(slot)) {
       this.team[slot - 1] = new AdSlot(ad);
-    }
-  }
-
-  apply(slot, member) {
-    if (_verifySlot(slot) && this.team[slot - 1].isAd) {
-      this.team[slot - 1].applicants.push(new Teammate(member));
-    }
-  }
-
-  acceptApplicant(slot, appIndex) {
-    if (_verifySlot(slot) && this.team[slot - 1].isAd) {
-      const member = this.team[slot - 1].applicants[appIndex];
-      this.team[slot - 1] = member;
     }
   }
 
@@ -154,5 +167,24 @@ module.exports = class Team {
         }
       }
     };
+  }
+
+  _findFirstEmptyIndex() {
+    // O(n)
+    for (let i = 0; i < this.team.length; i++) {
+      if (this.team[i].isAd) {
+        return i;
+      }
+    }
+    return -1;
+  }
+
+  _findMemberByName(name) {
+    for (let i = 0; i < this.team.length; i++) {
+      if (this.team[i].name === name) {
+        return i;
+      }
+    }
+    return -1;
   }
 };

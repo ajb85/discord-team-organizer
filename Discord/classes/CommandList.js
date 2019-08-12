@@ -30,7 +30,7 @@ module.exports = class CommandList {
     if (this.commands[command]) {
       const botResponse = this.commands[command](
         args,
-        commands.length ? commands[0] : null,
+        commands.length ? commands : null,
         msgOwner
       );
 

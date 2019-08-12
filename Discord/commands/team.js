@@ -9,6 +9,7 @@ class Teams {
   }
 
   add(team) {
+    // O(1) -> O(log n)
     if (
       !this.teams.length ||
       this.teams[this.teams.length - 1].isBeforeOrEqual(team)
@@ -21,7 +22,20 @@ class Teams {
     }
   }
 
+  join(user, description, teamName, slot) {
+    // O(n)
+    const team = this._findByName(teamName);
+    return team.join(user, description, slot);
+  }
+
+  leave(user, teamName) {
+    // O(n)
+    const team = this._findByName(teamName);
+    return team.leave(user);
+  }
+
   _binaryInsert(team) {
+    // O(log n)
     let max = this.teams.length - 1;
     let min = 0;
 
@@ -43,9 +57,16 @@ class Teams {
       }
     }
   }
+
+  _findByName(teamName) {
+    // O(n)
+    return this.teams.find(
+      team => team.name.toLowerCase() === teamName.toLowerCase()
+    );
+  }
 }
 
-module.exports = (Teams => (args, command, owner) => {
+module.exports = (Teams => (args, commands, owner) => {
   const teamCmd = new Command({
     date: true,
     time: true,
@@ -70,13 +91,16 @@ module.exports = (Teams => (args, command, owner) => {
     }
   };
 
-  const join = () => {};
+  const join = () => {
+    const input = commands ? commands : args ? args : null;
+    if (!input) return;
+  };
 
   const validCommands = {
     create,
     join
   };
-
+  const command = commands.shift().toLowerCase();
   if (command) {
     return validCommands[command]();
   }
