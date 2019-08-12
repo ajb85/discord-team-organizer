@@ -3,14 +3,17 @@ const reqDir = require('require-dir');
 module.exports = class CommandList {
   constructor() {
     this.commands = reqDir('../commands/');
+    this.trigger = '!statesman'; // Could update to process.end.TRIGGER
   }
 
   parse(msg) {
     const raw = msg.content;
-    const trigger = '!statesman';
-    if (raw.substring(0, 10).toLowerCase() !== trigger) return;
+    if (raw.substring(0, 10).toLowerCase() !== this.trigger || !this.trigger) {
+      return;
+    }
 
-    const args = raw.substring(11).split(', ');
+    // Remove trigger
+    const args = raw.substring(this.trigger.length + 2).split(', ');
 
     const msgOwner = {
       name: msg.author.username,
@@ -18,13 +21,25 @@ module.exports = class CommandList {
       avatar: msg.author.avatar
     };
 
-    const command = args.shift().toLowerCase();
+    const commands = args
+      .shift()
+      .toLowerCase()
+      .split(' ');
+    const command = commands.shift();
 
     if (this.commands[command]) {
-      const botResponse = this.commands[command](args, msgOwner);
+      const botResponse = this.commands[command](
+        args,
+        commands.length ? commands[0] : null,
+        msgOwner
+      );
       if (botResponse) {
         msg.reply(botResponse);
       }
+    } else {
+      msg.reply(
+        "Sorry, that's not a command I know.  For help try: `!statesman help`"
+      );
     }
   }
 };

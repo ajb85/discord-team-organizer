@@ -6,7 +6,7 @@ module.exports = class Team {
   constructor(game) {
     this.start = this._parseStart(game);
     this.level = game.level;
-    this.name = game.name;
+    this.name = game.name ? game.name : ` ${game.owner.name}'s Team`;
     this.team = [new Teammate(game.owner), ...this.emptyTeam()];
     this.alignment = game.alignment;
     this.isComplete = false;
@@ -64,6 +64,21 @@ module.exports = class Team {
     return moment(this.start, 'YY-DD-MM hh:mm').isBefore(now);
   }
 
+  isBefore(team) {
+    const date = team
+      ? moment(team.start, 'YY-DD-MM hh:mm')
+      : moment().format();
+    return moment(this.start, 'YY-DD-MM hh:mm').isBefore(date);
+  }
+
+  isBeforeOrEqual(team) {
+    const date = team
+      ? moment(team.start, 'YY-DD-MM hh:mm')
+      : moment().format();
+    const start = moment(this.start, 'YY-DD-MM hh:mm');
+    return start.isBefore(date) || start.isSame(date);
+  }
+
   emptyTeam() {
     const blankAd = {
       archetype: null,
@@ -92,28 +107,28 @@ module.exports = class Team {
   }
 
   embed() {
-    const owner = this.team[0];
-    let title = this.name ? ` ${this.name}` : ` ${owner.name}'s Team`;
+    let title = this.name;
 
-    const fields = this.team.map(member => {
-      let value = '';
-      if (member.isAd)
-        value += member.level
-          ? `Level ${member.level}`
+    const fields = this.team.map(slot => {
+      let description = '';
+      if (slot.isAd) {
+        description += slot.level
+          ? `Level ${slot.level}`
           : this.level
           ? `Level ${this.level}`
           : '';
-      else value += member.level ? `Level ${member.level}` : '';
+        description += slot.powersets ? ` ${slot.powersets}` : '';
+        description += slot.archetype ? ` ${slot.archetype}` : '';
+      } else description += slot.description ? slot.description : '';
 
-      value += member.powersets ? ` ${member.powersets}` : '';
-      value += member.archetype ? ` ${member.archetype}` : '';
-
-      if (member.isAd) {
-        value = value.length ? `Requirements: ${value}` : 'Requirements: None';
+      if (slot.isAd) {
+        description = description.length
+          ? `Requirements: ${description}`
+          : 'Requirements: None';
       }
       return {
-        name: member.isAd ? 'Open Slot' : member.name,
-        value: value ? value : 'Joined'
+        name: slot.isAd ? 'Open Slot' : slot.name,
+        description: description ? description : 'Joined'
       };
     });
 
@@ -138,37 +153,3 @@ module.exports = class Team {
     };
   }
 };
-
-// Example objects:
-
-// Team:
-/*
-    {
-        date: ,
-        time: ,
-        level: ,
-        name: ,
-        alignment: ,
-        owner: {TEAMMEMBER OBJECT},
-    }
-*/
-
-// Teammember:
-/*
-{
-    name: ,
-    archetype: ,
-    level: ,
-    powersets: ,
-}
-*/
-
-// AdSlot:
-/*
-{
-    archetype: ,
-    powersets: ,
-    level: ,
-    role: ,
-}
-*/

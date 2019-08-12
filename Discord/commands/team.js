@@ -9,14 +9,12 @@ class Teams {
   }
 
   add(team) {
-    const { start } = team;
-
     if (
       !this.teams.length ||
-      start >= this.teams[this.teams.length - 1].start
+      this.teams[this.teams.length - 1].isBeforeOrEqual(team)
     ) {
       this.teams.push(team);
-    } else if (start <= this.teams[0].start) {
+    } else if (team.isBeforeOrEqual(this.teams[0])) {
       this.teams.unshift(team);
     } else {
       this._binaryInsert(team);
@@ -24,7 +22,6 @@ class Teams {
   }
 
   _binaryInsert(team) {
-    const { start } = team;
     let max = this.teams.length - 1;
     let min = 0;
 
@@ -33,13 +30,13 @@ class Teams {
       const current = this.teams[index];
       const next = this.teams[index + 1];
       const prev = this.teams[index - 1];
-      if (start >= current.start && start <= next.start) {
+      if (current.isBeforeOrEqual(team) && team.isBeforeOrEqual(next)) {
         this.teams.splice(index + 1, 0, team);
         break;
-      } else if (start >= prev.start && start < current.start) {
+      } else if (prev.isBeforeOrEqual(team) && team.isBefore(current)) {
         this.teams.splice(index - 1, 0, team);
         break;
-      } else if (start > current.start) {
+      } else if (current.isBefore(team)) {
         min = index;
       } else {
         max = index;
@@ -48,7 +45,7 @@ class Teams {
   }
 }
 
-module.exports = (Teams => (args, owner) => {
+module.exports = (Teams => (args, command, owner) => {
   const teamCmd = new Command({
     date: true,
     time: true,
@@ -56,18 +53,34 @@ module.exports = (Teams => (args, owner) => {
     name: true,
     alignment: true
   });
-  const newTeam = teamCmd.execute(
-    args,
-    params => new Team({ ...params, owner })
-  );
 
-  if (!newTeam.isExpired()) {
-    newTeam.logTeam();
-    Teams.add(newTeam);
-    return newTeam.embed();
-  } else {
-    return 'Sorry, creating a team in the past would violate continuity.';
+  const create = () => {
+    const newTeam = teamCmd.execute(
+      args,
+      params => new Team({ ...params, owner })
+    );
+
+    if (!newTeam.isExpired()) {
+      newTeam.logTeam();
+      Teams.add(newTeam);
+      return newTeam.embed();
+    } else {
+      f;
+      return 'Sorry, creating a team in the past would violate continuity.';
+    }
+  };
+
+  const join = () => {};
+
+  const validCommands = {
+    create,
+    join
+  };
+
+  if (command) {
+    validCommands[command]();
   }
 })(new Teams());
+
 // !statesman team, date 07/13/2018, time 07:00PM, level 45, activity Stateman Task Force,
 // alignment hero

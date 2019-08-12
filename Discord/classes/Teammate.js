@@ -3,9 +3,7 @@ module.exports = class Teammate {
     this.id = member.id;
     this.avatar = member.avatar;
     this.name = member.name;
-    this.archetype = member.archetype;
-    this.level = member.level;
-    this.powersets = member.powersets;
+    this.description = member.description;
     this.isTeammate = true;
   }
 };
