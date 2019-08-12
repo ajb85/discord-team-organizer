@@ -52,9 +52,9 @@ module.exports = class Team {
     if (this.team[index].isTeammate) {
       return 'Someone is already in that slot!';
     }
-    if (this._findMemberByID(user.id) !== -1) {
-      return 'You are already on that team!';
-    }
+    // if (this._findMemberByID(user.id) !== -1) {
+    //   return 'You are already on that team!';
+    // }
 
     this.team[index] = new Teammate({ ...user, description });
     return 'Getting you added now!';
