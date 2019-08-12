@@ -43,6 +43,7 @@ module.exports = class Team {
   join(user, description, slot) {
     // O(1) - O(n)
     const index = slot ? parseInt(slot, 10) - 1 : this._findFirstEmptyIndex();
+    console.log('User joining index: ', index);
     if (index === -1) {
       return 'Sorry, that team is full';
     }
@@ -142,12 +143,12 @@ module.exports = class Team {
 
       if (slot.isAd) {
         description = description.length
-          ? `Requirements: ${description}`
-          : 'Requirements: None';
+          ? `   Requirements: ${description}`
+          : '   Requirements: None';
       }
       return {
         name: slot.isAd ? `${i + 1}) Open Slot` : `${i + 1}) ${slot.name}`,
-        value: description.length ? description : 'Joined'
+        value: description.length ? description : '   Joined'
       };
     });
 

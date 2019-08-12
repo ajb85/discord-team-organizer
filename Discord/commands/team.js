@@ -25,6 +25,7 @@ class Teams {
   join(user, description, teamName, slot) {
     // O(n)
     const team = this._findByName(teamName);
+    console.log('User joining team: ', team);
     return team.join(user, description, slot);
   }
 
@@ -92,8 +93,12 @@ module.exports = (Teams => (args, commands, owner) => {
   };
 
   const join = () => {
-    const input = commands ? commands : args ? args : null;
-    if (!input) return;
+    let teamName = args.shift();
+    teamName = teamName.substring(1, teamName.length - 1);
+    const slot = args.length ? args.shift() : null;
+    const description = args.length ? args.shift() : null;
+
+    return Teams.join(owner, description, teamName, slot);
   };
 
   const validCommands = {
