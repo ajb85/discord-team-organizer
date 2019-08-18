@@ -3,16 +3,18 @@ const reqDir = require('require-dir');
 module.exports = class CommandList {
   constructor() {
     this.commands = reqDir('../commands/');
-    this.trigger = '!statesman'; // Could update to process.end.TRIGGER
+    this.trigger = '!statesman'; // Could update to process.env.TRIGGER
   }
-
   parse(msg) {
     const raw = msg.content;
-    if (raw.substring(0, 10).toLowerCase() !== this.trigger || !this.trigger) {
+    if (
+      raw.substring(0, this.trigger.length).toLowerCase() !== this.trigger ||
+      !this.trigger
+    ) {
       return;
     }
 
-    // Remove trigger
+    // Remove trigger plus space
     const args = raw.substring(this.trigger.length + 1).split(', ');
 
     const msgOwner = {

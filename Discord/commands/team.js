@@ -1,6 +1,4 @@
-const moment = require('moment');
-const Team = require('../classes/Team.js');
-const Command = require('../classes/Command.js');
+const reqDir = require('require-dir');
 
 // Temporary measure until DB is up
 class Teams {
@@ -68,47 +66,11 @@ class Teams {
 }
 
 module.exports = (Teams => (args, commands, owner) => {
-  const teamCmd = new Command({
-    date: true,
-    time: true,
-    level: true,
-    name: true,
-    alignment: true
-  });
-
-  const create = () => {
-    const newTeam = teamCmd.execute(
-      args,
-      params => new Team({ ...params, owner })
-    );
-
-    if (!newTeam.isExpired()) {
-      newTeam.logTeam();
-      Teams.add(newTeam);
-      return newTeam.embed();
-    } else {
-      f;
-      return 'Sorry, creating a team in the past would violate continuity.';
-    }
-  };
-
-  const join = () => {
-    let teamName = args.shift();
-    teamName = teamName.substring(1, teamName.length - 1);
-    const slot = args.length ? args.shift() : null;
-    const description = args.length ? args.shift() : null;
-    const joinMsg = Teams.join(owner, description, teamName, slot);
-
-    return joinMsg;
-  };
-
-  const validCommands = {
-    create,
-    join
-  };
+  const validCommands = reqDir('../subcommands/team/');
   const command = commands.shift().toLowerCase();
-  if (command) {
-    return validCommands[command]();
+
+  if (command && validCommands[command]) {
+    return validCommands[command](Teams);
   }
 })(new Teams());
 
