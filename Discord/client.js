@@ -14,7 +14,11 @@ client.on('error', e => {
 });
 
 client.on('message', msg => {
-  console.log(client.channels);
+  client.channels.forEach((value, key) => {
+    if (value.type === text && value.name === 'general') {
+      console.log(`${key}: ${value.name}`);
+    }
+  });
   commands.parse(msg);
 });
 
