@@ -14,6 +14,7 @@ client.on('error', e => {
 });
 
 client.on('message', msg => {
+  console.log(client.channels);
   commands.parse(msg);
 });
 
