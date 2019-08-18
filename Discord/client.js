@@ -15,7 +15,7 @@ client.on('error', e => {
 
 client.on('message', msg => {
   client.channels.forEach((value, key) => {
-    if (value.type === text && value.name === 'general') {
+    if (value.type === 'text' && value.name === 'general') {
       console.log(`${key}: ${value.name}`);
     }
   });
