@@ -76,6 +76,7 @@ module.exports = class CommandList {
     this.channel;
     this.messageIDs = [];
     this.Teams = new Teams();
+    console.log('TEAMS: ', this.Teams);
   }
 
   parse(msg) {
