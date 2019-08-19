@@ -154,10 +154,10 @@ module.exports = class CommandList {
 
 function findOrCreateChannel(msg, client) {
   console.log('Team channel not found');
-  const existingChannel = client.channels.find((val, key) => {
-    console.log(`Search channel: ${key}: ${val}`);
-    return key === 'name' && value === process.env.TEAM_CHANNEL;
-  });
+  const existingChannel = client.channels.find(
+    'name',
+    process.env.TEAM_CHANNEL
+  );
 
   if (existingChannel) {
     console.log(
