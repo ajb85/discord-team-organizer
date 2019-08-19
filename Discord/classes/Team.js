@@ -1,6 +1,15 @@
 const moment = require('moment');
-const Teammate = require('./Teammate.js');
 const AdSlot = require('./AdSlot.js');
+
+class Teammate {
+  constructor(member) {
+    this.id = member.id;
+    this.avatar = member.avatar;
+    this.name = member.name;
+    this.description = member.description;
+    this.isTeammate = true;
+  }
+}
 
 module.exports = class Team {
   constructor(game) {

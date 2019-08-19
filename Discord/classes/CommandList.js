@@ -1,12 +1,80 @@
 const reqDir = require('require-dir');
 
+// Temporary measure until DB is up
+class Teams {
+  constructor(client) {
+    this.teams = [];
+    this.messageIDs = [];
+  }
+
+  add(team) {
+    // O(1) -> O(log n)
+    if (
+      !this.teams.length ||
+      this.teams[this.teams.length - 1].isBeforeOrEqual(team)
+    ) {
+      this.teams.push(team);
+    } else if (team.isBeforeOrEqual(this.teams[0])) {
+      this.teams.unshift(team);
+    } else {
+      this._binaryInsert(team);
+    }
+  }
+
+  join(user, description, teamName, slot) {
+    // O(n)
+    const team = this._findByName(teamName);
+    console.log('User joining team: ', team);
+    return team.join(user, description, slot);
+  }
+
+  leave(user, teamName) {
+    // O(n)
+    const team = this._findByName(teamName);
+    return team.leave(user);
+  }
+
+  _binaryInsert(team) {
+    // O(log n)
+    let max = this.teams.length - 1;
+    let min = 0;
+
+    while (true) {
+      let index = Math.floor((max + min) / 2);
+      const current = this.teams[index];
+      const next = this.teams[index + 1];
+      const prev = this.teams[index - 1];
+      if (current.isBeforeOrEqual(team) && team.isBeforeOrEqual(next)) {
+        this.teams.splice(index + 1, 0, team);
+        break;
+      } else if (prev.isBeforeOrEqual(team) && team.isBefore(current)) {
+        this.teams.splice(index - 1, 0, team);
+        break;
+      } else if (current.isBefore(team)) {
+        min = index;
+      } else {
+        max = index;
+      }
+    }
+  }
+
+  _findByName(teamName) {
+    // O(n)
+    return this.teams.find(
+      team => team.name.toLowerCase() === teamName.toLowerCase()
+    );
+  }
+}
 module.exports = class CommandList {
   constructor(client) {
     this.commands = reqDir('../commands/');
     this.trigger = process.env.TRIGGER;
     this.client = client;
     this.channel;
+    this.messageIDs = [];
+    this.Teams = new Teams();
   }
+
   parse(msg) {
     const raw = msg.content;
     if (
@@ -17,6 +85,8 @@ module.exports = class CommandList {
     }
 
     if (!this.channel) {
+      // In the event a channel is created, this.channel is a promise
+      // So always use it with a .then()
       this.channel = findOrCreateChannel();
     }
     // Remove trigger plus space
@@ -39,7 +109,7 @@ module.exports = class CommandList {
         args,
         commands.length ? commands : null,
         msgOwner,
-        this.client
+        this.Teams
       );
 
       if (botResponse) {
@@ -47,6 +117,39 @@ module.exports = class CommandList {
       }
     }
   }
+
+  manageMessages() {
+    console.log('CHANNEL: ', this.channel);
+    this.Teams.teams.forEach((team, i) => {
+      if (this.messageIDs(i)) {
+        this.channel.then(channel =>
+          channel
+            .fetchMessage(this.messageIDs[i])
+            .then(msg => msg.edit(team.embed()))
+        );
+      } else {
+        this.channel.then(channel =>
+          channel.send(team.embed()).then(msg => {
+            console.log('New Message: ', msg);
+            this.messageIDs.push(msg.id);
+          })
+        );
+      }
+    });
+
+    for (let i = this.Teams.teams.length; i < this.messageIDs.length; i++) {
+      this.channel.then(channel =>
+        channel.fetchMessage(this.messageIDs[i].delete())
+      );
+    }
+    console.log(
+      'MODIFY MESSAGES: ',
+      this.messageIDs.slice(this.Teams.teams.length).length ===
+        this.Teams.teams.length - this.messageIDs.length
+    );
+  }
+  // Teams: [1, 2, 3, 4]
+  // Msgs:  [1, 2, 3, 4, 5, 6]
 };
 
 function findOrCreateChannel(client) {
