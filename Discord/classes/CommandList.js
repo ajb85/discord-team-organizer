@@ -4,7 +4,6 @@ const reqDir = require('require-dir');
 class Teams {
   constructor(client) {
     this.teams = [];
-    this.messageIDs = [];
   }
 
   getSize() {
@@ -115,7 +114,7 @@ module.exports = class CommandList {
         commands.length ? commands : null,
         msgOwner,
         this.Teams,
-        this.manageMessages
+        this.manageMessages.bind(this)
       );
 
       if (botResponse) {
