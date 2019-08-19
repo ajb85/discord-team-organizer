@@ -87,7 +87,7 @@ module.exports = class CommandList {
     if (!this.channel) {
       // In the event a channel is created, this.channel is a promise
       // So always use it with a .then()
-      this.channel = findOrCreateChannel();
+      this.channel = findOrCreateChannel(client);
     }
     // Remove trigger plus space
     const args = raw.substring(this.trigger.length + 1).split(', ');
