@@ -139,7 +139,7 @@ module.exports = class CommandList {
     }
 
     this.Teams.teams.forEach((team, i) => {
-      if (this.messageIDs(i)) {
+      if (this.messageIDs[i]) {
         this.channel
           .fetchMessage(this.messageIDs[i])
           .then(msg => msg.edit(team.embed()));
