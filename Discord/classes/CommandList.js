@@ -7,6 +7,10 @@ class Teams {
     this.messageIDs = [];
   }
 
+  getSize() {
+    return this.team.length;
+  }
+
   add(team) {
     // O(1) -> O(log n)
     if (
@@ -109,7 +113,8 @@ module.exports = class CommandList {
         args,
         commands.length ? commands : null,
         msgOwner,
-        this.Teams
+        this.Teams,
+        this.manageMessages
       );
 
       if (botResponse) {
@@ -119,6 +124,21 @@ module.exports = class CommandList {
   }
 
   manageMessages() {
+    for (let i = this.Teams.getSize(); i < this.messageIDs.length; i++) {
+      this.channel.then(channel =>
+        channel.fetchMessage(this.messageIDs[i].delete())
+      );
+    }
+    console.log(
+      'MODIFY MESSAGES: ',
+      this.messageIDs.slice(this.Teams.getSize()).length ===
+        this.Teams.getSize() - this.messageIDs.length
+    );
+
+    if (!this.Teams.getSize()) {
+      return;
+    }
+
     console.log('CHANNEL: ', this.channel);
     this.Teams.teams.forEach((team, i) => {
       if (this.messageIDs(i)) {
@@ -136,20 +156,7 @@ module.exports = class CommandList {
         );
       }
     });
-
-    for (let i = this.Teams.teams.length; i < this.messageIDs.length; i++) {
-      this.channel.then(channel =>
-        channel.fetchMessage(this.messageIDs[i].delete())
-      );
-    }
-    console.log(
-      'MODIFY MESSAGES: ',
-      this.messageIDs.slice(this.Teams.teams.length).length ===
-        this.Teams.teams.length - this.messageIDs.length
-    );
   }
-  // Teams: [1, 2, 3, 4]
-  // Msgs:  [1, 2, 3, 4, 5, 6]
 };
 
 function findOrCreateChannel(msg, client) {

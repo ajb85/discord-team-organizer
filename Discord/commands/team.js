@@ -1,11 +1,13 @@
 const reqDir = require('require-dir');
 
-module.exports = (args, commands, owner, Teams) => {
+module.exports = (args, commands, owner, Teams, updateMessages) => {
   const validCommands = reqDir('../subcommands/team/');
   const command = commands.shift().toLowerCase();
 
   if (command && validCommands[command]) {
-    return validCommands[command](args, owner, Teams);
+    const botResponse = validCommands[command](args, owner, Teams);
+    updateMessages();
+    return botResponse;
   }
 };
 
