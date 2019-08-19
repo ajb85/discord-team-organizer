@@ -76,7 +76,6 @@ module.exports = class CommandList {
     this.channel;
     this.messageIDs = [];
     this.Teams = new Teams();
-    console.log('TEAMS: ', this.Teams);
   }
 
   parse(msg) {
@@ -139,21 +138,16 @@ module.exports = class CommandList {
       return;
     }
 
-    console.log('CHANNEL: ', this.channel);
     this.Teams.teams.forEach((team, i) => {
       if (this.messageIDs(i)) {
-        this.channel.then(channel =>
-          channel
-            .fetchMessage(this.messageIDs[i])
-            .then(msg => msg.edit(team.embed()))
-        );
+        this.channel
+          .fetchMessage(this.messageIDs[i])
+          .then(msg => msg.edit(team.embed()));
       } else {
-        this.channel.then(channel =>
-          channel.send(team.embed()).then(msg => {
-            console.log('New Message: ', msg);
-            this.messageIDs.push(msg.id);
-          })
-        );
+        this.channel.send(team.embed()).then(msg => {
+          console.log('New Message: ', msg);
+          this.messageIDs.push(msg.id);
+        });
       }
     });
   }
