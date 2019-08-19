@@ -7,7 +7,7 @@ const commands = new CommandList(client);
 // Optional events
 client.on('ready', () => {
   console.log('Statesman Online!');
-  setInterval(commands.manageMessages(), 60000);
+  setInterval(commands.manageMessages, 60000);
 });
 
 client.on('error', e => {
