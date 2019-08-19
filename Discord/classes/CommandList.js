@@ -5,7 +5,7 @@ module.exports = class CommandList {
     this.commands = reqDir('../commands/');
     this.trigger = process.env.TRIGGER;
     this.client = client;
-    this.channelID;
+    this.channel;
   }
   parse(msg) {
     const raw = msg.content;
@@ -16,20 +16,8 @@ module.exports = class CommandList {
       return;
     }
 
-    if (!this.channelID) {
-      const existingChannel = this.client.channels.find(
-        'name',
-        process.env.TEAM_CHANNEL
-      );
-
-      if (existingChannel) {
-        this.channelID = existingChannel.id;
-      } else {
-        msg.guild
-          .createChannel(process.env.TEAM_CHANNEL)
-          .then(res => console.log(res))
-          .catch(err => console.log(err));
-      }
+    if (!this.channel) {
+      this.channel = findOrCreateChannel();
     }
     // Remove trigger plus space
     const args = raw.substring(this.trigger.length + 1).split(', ');
@@ -60,3 +48,20 @@ module.exports = class CommandList {
     }
   }
 };
+
+function findOrCreateChannel(client) {
+  console.log('Team channel not found');
+  const existingChannel = client.channels.find(
+    (val, key) => key === 'name' && value === process.env.TEAM_CHANNEL
+  );
+
+  if (existingChannel) {
+    console.log(
+      `Found channel: ${existingChannel.name}: ${existingChannel.id}`
+    );
+
+    return existingChannel;
+  } else {
+    return msg.guild.createChannel(process.env.TEAM_CHANNEL);
+  }
+}
