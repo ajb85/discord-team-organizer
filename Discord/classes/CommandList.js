@@ -87,7 +87,7 @@ module.exports = class CommandList {
     if (!this.channel) {
       // In the event a channel is created, this.channel is a promise
       // So always use it with a .then()
-      this.channel = findOrCreateChannel(this.client);
+      this.channel = findOrCreateChannel(msg, this.client);
     }
     // Remove trigger plus space
     const args = raw.substring(this.trigger.length + 1).split(', ');
@@ -152,7 +152,7 @@ module.exports = class CommandList {
   // Msgs:  [1, 2, 3, 4, 5, 6]
 };
 
-function findOrCreateChannel(client) {
+function findOrCreateChannel(msg, client) {
   console.log('Team channel not found');
   const existingChannel = client.channels.find(
     (val, key) => key === 'name' && value === process.env.TEAM_CHANNEL
