@@ -6,7 +6,7 @@ module.exports = (args, commands, owner, Teams, updateMessages) => {
 
   if (command && validCommands[command]) {
     const botResponse = validCommands[command](args, owner, Teams);
-    // updateMessages();
+    updateMessages();
     return botResponse;
   }
 };

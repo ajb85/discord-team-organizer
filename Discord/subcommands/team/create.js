@@ -18,7 +18,7 @@ module.exports = (args, owner, Teams) => {
   if (!newTeam.isExpired()) {
     newTeam.logTeam();
     Teams.add(newTeam);
-    return 'New team created!';
+    return `New team created in #${process.env.TEAM_CHANNEL}!`;
   } else {
     return 'Sorry, creating a team in the past would violate continuity.';
   }
