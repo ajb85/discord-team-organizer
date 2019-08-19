@@ -8,7 +8,7 @@ class Teams {
   }
 
   getSize() {
-    return this.team.length;
+    return this.teams.length;
   }
 
   add(team) {
