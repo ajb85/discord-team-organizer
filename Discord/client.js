@@ -14,7 +14,7 @@ client.on('error', e => {
 });
 
 client.on('message', msg => {
-  if (!message.author.equals(client.user)) {
+  if (!msg.author.equals(client.user)) {
     commands.parse(msg);
   }
 });
