@@ -11,6 +11,7 @@ module.exports = class Team {
     this.owner = game.owner;
     this.alignment = game.alignment;
     this.isComplete = false;
+    this.messageID = null;
   }
 
   _verifySlotIndex(slot) {

@@ -2,8 +2,9 @@ const reqDir = require('require-dir');
 
 // Temporary measure until DB is up
 class Teams {
-  constructor() {
+  constructor(client) {
     this.teams = [];
+    this.messageIDs = [];
   }
 
   add(team) {
@@ -65,12 +66,12 @@ class Teams {
   }
 }
 
-module.exports = (Teams => (args, commands, owner) => {
+module.exports = (Teams => (args, commands, owner, client) => {
   const validCommands = reqDir('../subcommands/team/');
   const command = commands.shift().toLowerCase();
 
   if (command && validCommands[command]) {
-    return validCommands[command](Teams);
+    const embed = validCommands[command](args, owner, Teams);
   }
 })(new Teams());
 

@@ -2,7 +2,7 @@ const Discord = require('discord.js');
 const client = new Discord.Client();
 
 const CommandList = require('./classes/CommandList.js');
-const commands = new CommandList();
+const commands = new CommandList(client);
 
 // Optional events
 client.on('ready', () => {
@@ -14,12 +14,9 @@ client.on('error', e => {
 });
 
 client.on('message', msg => {
-  client.channels.forEach((value, key) => {
-    if (value.type === 'text' && value.name === 'general') {
-      console.log(`${key}: ${value.name}`);
-    }
-  });
-  commands.parse(msg);
+  if (!message.author.equals(client.user)) {
+    commands.parse(msg);
+  }
 });
 
 module.exports = client;

@@ -1,9 +1,11 @@
 const reqDir = require('require-dir');
 
 module.exports = class CommandList {
-  constructor() {
+  constructor(client) {
     this.commands = reqDir('../commands/');
-    this.trigger = '!statesman'; // Could update to process.env.TRIGGER
+    this.trigger = process.env.TRIGGER;
+    this.client = client;
+    this.channelID;
   }
   parse(msg) {
     const raw = msg.content;
@@ -14,6 +16,21 @@ module.exports = class CommandList {
       return;
     }
 
+    if (!this.channelID) {
+      const existingChannel = this.client.channels.find(
+        'name',
+        process.env.TEAM_CHANNEL
+      );
+
+      if (existingChannel) {
+        this.channelID = existingChannel.id;
+      } else {
+        msg.guild
+          .createChannel(process.env.TEAM_CHANNEL)
+          .then(res => console.log(res))
+          .catch(err => console.log(err));
+      }
+    }
     // Remove trigger plus space
     const args = raw.substring(this.trigger.length + 1).split(', ');
 
@@ -33,7 +50,8 @@ module.exports = class CommandList {
       const botResponse = this.commands[command](
         args,
         commands.length ? commands : null,
-        msgOwner
+        msgOwner,
+        this.client
       );
 
       if (botResponse) {
