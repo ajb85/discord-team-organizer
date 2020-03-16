@@ -1,3 +1,5 @@
+const reqDir = require('require-dir');
+
 module.exports = class CommandList {
   constructor(client) {
     this.commands = reqDir('../commands/');
@@ -5,8 +7,6 @@ module.exports = class CommandList {
     this.client = client;
     this.channel;
     this.messageIDs = [];
-    this.Teams = new Teams();
-    console.log('TEAMS: ', this.Teams);
   }
 
   parse(msg) {
