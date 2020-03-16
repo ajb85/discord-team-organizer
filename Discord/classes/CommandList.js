@@ -2,7 +2,7 @@ const reqDir = require('require-dir');
 
 module.exports = class CommandList {
   constructor(client) {
-    // this.commands = reqDir('../commands/');
+    this.commands = reqDir('../commands/');
     this.trigger = process.env.TRIGGER;
     this.client = client;
     this.channel;
@@ -11,7 +11,7 @@ module.exports = class CommandList {
 
   parse(msg) {
     const split = msg.split(' ');
-    if (split.shift() !== process.env.TRIGGER) {
+    if (split.shift() !== this.trigger) {
       // Do nothing if trigger isn't used
       return;
     }

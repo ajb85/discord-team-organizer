@@ -16,6 +16,8 @@ client.on('error', e => {
 
 client.on('message', msg => {
   if (!msg.author.equals(client.user)) {
+    // Only parse the message if the bot didn't send it
+    console.log('MESSAGE OBJECT: ', msg);
     commands.parse(msg);
   }
 });
