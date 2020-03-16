@@ -2,7 +2,7 @@ const reqDir = require('require-dir');
 
 module.exports = class CommandList {
   constructor(client) {
-    this.commands = reqDir('../commands/');
+    // this.commands = reqDir('../commands/');
     this.trigger = process.env.TRIGGER;
     this.client = client;
     this.channel;
