@@ -8,7 +8,7 @@
     "dblapi.js": "^2.3.0",
     "discord.js": "^11.5.1",
     "dotenv": "^8.1.0",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-async-errors": "^3.1.1",
     "helmet": "^3.18.0",
     "moment": "^2.24.0",
